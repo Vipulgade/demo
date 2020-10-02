@@ -1,2 +1,41 @@
 Akash ROkade
 I Confirm
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import LabelEncoder
+data=pd.read_csv('Decisiontree.csv')
+#print(data)
+df=pd.DataFrame(data)
+
+le=LabelEncoder()
+
+
+X=df.drop(columns=['ID','Buys'])
+
+X.Age=le.fit_transform(X.Age)
+X.Income=le.fit_transform(X.Income)
+X.Gender=le.fit_transform(X.Gender)
+X.Marital_Status=le.fit_transform(X.Marital_Status)
+Y=df[['Buys']]
+
+#Y.Buys=le.fit_transform(Y.Buys)
+
+logisticRegressor=LogisticRegression()
+logisticRegressor.fit(X,Y)
+
+ypred=logisticRegressor.predict(X)
+print(ypred)
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+
+cm=confusion_matrix(Y,ypred)
+print(cm)
+
+cr=classification_report(Y,ypred)
+print(cr)
+
+acs=accuracy_score(Y,ypred)
+print(acs)
